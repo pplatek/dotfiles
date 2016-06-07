@@ -1,0 +1,26 @@
+import datetime
+import xonsh
+now = datetime.datetime.now
+$FORMATTER_DICT['now_time'] = lambda: now().strftime('%a %b %d %Y %I:%M:%S %p')
+
+def nice_git():
+    branch = xonsh.environ.current_branch().strip()
+    if branch:
+        return 'git:({branch})'.format(branch=branch)
+    else:
+        return ''
+
+$FORMATTER_DICT['curr_branch'] = nice_git
+
+xontrib load prompt_ret_code
+    
+$PROMPT= '''{BACKGROUND_BLACK}{#22cd22}░▒▓█{BACKGROUND_#22cd22}\
+{BOLD_INTENSE_YELLOW}{env_name}{BOLD_WHITE}[{user}@{hostname}]   \
+{BACKGROUND_BLACK}{#22cd22}█▓▒░\
+{BOLD_INTENSE_GREEN}[{BOLD_WHITE}{now_time}{BOLD_INTENSE_GREEN}] 
+{BOLD_WHITE}[{cwd}]   \
+{branch_color}{curr_branch}
+{ret_code_color}{ret_code}{BOLD_INTENSE_GREEN}>> '''
+
+$LS_COLORS='rs=0:di=01;36:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:'
+
